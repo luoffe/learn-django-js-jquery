@@ -3,11 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <title>index.html</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
 <body>
+    <!-- -->
 <h1>Test view</h1>
 <button id="obtenerDatos">Obtener Datos</button>
     <div id="respuesta"></div>
+
+<!-- GET all de lista (JS con fetch)
+    Boton q debe sacar la tabla con los nombres de usuarios q existen -->
+<button id="mostrarUsuarios">Mostrar usuarios con JS</button>
+    <table id="tablaUsuarios">
+        <thead>
+            <tr>
+                <th>Nombre de usuarios</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody id="cuerpoTablaUsuarios"></tbody>
+    </table>
+
+    <!-- Tabla desde view sin JS -->
+    
+    <h2>Tabla desde view</h2>
+    <table>
+        <thead>
+            <tr>
+                <td>Nombre</td>
+                <td>Email</td>
+            </tr>
+        </thead>
+        <tbody>
+        {% for usuario in usuarios %}
+            <tr>
+                <td>{{ usuario.username }}</td>
+                <td>{{ usuario.email }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    
+
+
+    <!-- Ejemplo de codigo de Arturo 
+$("#btn_selecionar_1").on('click', function(e){ -->
 
     <script>
         document.getElementById('obtenerDatos').addEventListener('click', function() {
@@ -21,5 +61,45 @@
                 });
         });
     </script>
+
+    <script>
+        $(document).ready(function(){
+            document.getElementById("respuesta").textContent = "test"
+            console.log("index cargado")
+
+        });
+    </script>
+
+    <!--
+
+     -->
+
+    <script>
+        
+    /* GET all de lista (JS con fetch) */ /**/
+    document.getElementById('mostrarUsuarios').addEventListener('click', function() {
+        
+        fetch("{% url 'mostrar_usuarios' %}")
+            .then(response => response.json())
+            .then(data => {
+                /* Punto de control - sacar los datos desde view a template(index): mostrar en el consol */
+                console.log(data) 
+                const cuerpoTablaUsuarios = document.getElementById('cuerpoTablaUsuarios');
+                cuerpoTablaUsuarios.innerHTML = '';
+                /* Creamos un bucle de meter datos de lista a la tabla creada */
+                data.forEach(usuario => {
+                    let fila = document.createElement('tr');  // Corrección: especifica 'tr' como etiqueta
+                    fila.innerHTML += `<td>${usuario.username}</td>`;
+                    fila.innerHTML += `<td>${usuario.email}</td>`;
+                    cuerpoTablaUsuarios.appendChild(fila);
+                });
+            })
+            .catch(error => {
+                console.error('Error al mostrar la tabla con los usuarios:', error);
+            });    
+        });
+
+     </script>
+
 </body>
 </html>
