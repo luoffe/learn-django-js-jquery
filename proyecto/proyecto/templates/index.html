@@ -43,8 +43,24 @@
         {% endfor %}
         </tbody>
     </table>
-    
 
+<!-- GET de un User por id (JS con fetch) -->
+<h2>GET de un User por id</h2>
+<form>
+    <label for="idUsuario">Introducir ID de Usuario:</label>
+    <input type="number" id="idUsuario" name="id_usuario"><br>
+    <button id="obtenerUsuario">Obtener usuario</button>
+        <table id="tablaUsuarioId">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre de usuarios</th>
+                    <th>Email</th>
+                </tr>
+            </thead>
+            <tbody id="cuerpoTablaUsuarioID"></tbody>
+        </table>
+</form>
 
     <!-- Ejemplo de codigo de Arturo 
 $("#btn_selecionar_1").on('click', function(e){ -->
@@ -70,9 +86,7 @@ $("#btn_selecionar_1").on('click', function(e){ -->
         });
     </script>
 
-    <!--
-
-     -->
+    <!-- -->
 
     <script>
         
@@ -100,6 +114,33 @@ $("#btn_selecionar_1").on('click', function(e){ -->
         });
 
      </script>
+
+    <script>
+            
+        /* GET all de lista (JS con fetch) */ /**/
+        document.getElementById('obtenerUsuarios').addEventListener('click', function() {
+            
+            fetch("{% url 'mostrar_usuarios' %}")
+                .then(response => response.json())
+                .then(data => {
+                    /* Punto de control - sacar los datos desde view a template(index): mostrar en el consol */
+                    console.log(data) 
+                    const cuerpoTablaUsuarios = document.getElementById('cuerpoTablaUsuarios');
+                    cuerpoTablaUsuarios.innerHTML = '';
+                    /* Creamos un bucle de meter datos de lista a la tabla creada */
+                    data.forEach(usuario => {
+                        let fila = document.createElement('tr');  // Corrección: especifica 'tr' como etiqueta
+                        fila.innerHTML += `<td>${usuario.username}</td>`;
+                        fila.innerHTML += `<td>${usuario.email}</td>`;
+                        cuerpoTablaUsuarios.appendChild(fila);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error al mostrar la tabla con los usuarios:', error);
+                });    
+            });
+
+    </script>
 
 </body>
 </html>

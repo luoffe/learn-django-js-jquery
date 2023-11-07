@@ -53,6 +53,9 @@ def mostrar_usuarios(request):
 
     # Metemos sin JS debes conectar view con templeate a mano -> poner q va a devolver index
 
+def get_usuario_id():
+    
+
 def index(request):
     usuarios_list = get_usuarios()
     dict_ = {

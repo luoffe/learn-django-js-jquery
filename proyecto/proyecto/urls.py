@@ -22,4 +22,5 @@ urlpatterns = [
     path('test_view/', test_view, name='test_view'),
     path('', index, name='index'),
     path('mostrar_usuarios/', mostrar_usuarios, name='mostrar_usuarios'),
+    path('obtener_usuario/{:id}', obtener_usuario, name='obtener_usuario/{:id}'),
 ]
